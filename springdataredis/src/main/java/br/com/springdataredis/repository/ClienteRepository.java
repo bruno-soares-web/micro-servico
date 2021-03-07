@@ -1,38 +1,39 @@
 package br.com.springdataredis.repository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import br.com.springdataredis.model.Cliente;
+import br.com.springdataredis.model.ClienteModel;
 
 @Repository
-public interface ClienteRepository{
+public class ClienteRepository{
 
 
-    public static final String HASH_KEY = "Product";
-
+    public static final String HASH_KEY = "Cliente";
+    
     @Autowired
     private RedisTemplate template;
-    
-    public Cliente save(Cliente cliente){
-        template.opsForHash().put(HASH_KEY,cliente.getId,cliente);
+
+	public ClienteModel save(ClienteModel clienteModel){
+        template.opsForHash().put(HASH_KEY,clienteModel.getId(),clienteModel);
         return clienteModel;
     }
 
-    public List<Cliente> findAll(){
+	public List<ClienteModel> findAll(){
         return template.opsForHash().values(HASH_KEY);
     }
 
-    public Cliente findClienteById(int id){
-        System.out.println("called findProductById() from DB");
-        return (Cliente) template.opsForHash().get(HASH_KEY,id);
+	public ClienteModel findById(int i){
+        return (ClienteModel) template.opsForHash().get(HASH_KEY,i);
     }
 
 
-    public String deleteProduct(int id){
+	public String delete(int id){
          template.opsForHash().delete(HASH_KEY,id);
         return "product removed !!";
     }
-
+  
 }
